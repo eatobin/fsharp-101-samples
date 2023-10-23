@@ -3,20 +3,25 @@
 // List
 
 // Built-in creation functions
-List.init<int> 10 (fun i -> i)
+List.init<int> 10 id
 List.init<int> 10 (fun i -> i * 2)
 
 // Inline initialization
 [ 1; 2; 3; 4; 5; 6; 7; 8; 9; 10 ]
-[ 1 .. 10 ]
+[ 1..10 ]
 
 // Array
-Array.init<int> 10 (id)
+Array.init<int> 10 id
 Array2D.init<int> 3 3 (fun x _ -> x)
 Array3D.init<int> 3 3 3 (fun _ _ z -> z)
 
+let a: int array = Array.init<int> 10 id
+Array.set a 1 111
+let b = [|11|]
+let m = Array.append a b
+
 [| 1; 2; 3; 4; 5; 6; 7; 8; 9; 10 |]
-[| 1 .. 10 |]
+[| 1..10 |]
 
 // Sequence
 Seq.init<int> 10 (fun i -> i)
@@ -35,7 +40,7 @@ seq {
     10
 }
 
-seq { 1 .. 10 }
+seq { 1..10 }
 
 (**ACCESS ELEMENTS**)
 open System
@@ -69,24 +74,20 @@ transactions.Head
 transactions.Tail
 
 // Access by index
-// This is just for demo purposes. 
+// This is just for demo purposes.
 // Access by index is more efficient on arrays.
 transactions.[0] // similar to head
 transactions.[1..] // similar to tail
 
 // Built in collection operations
-transactions
-|> List.find (fun transaction -> transaction.CustomerId = "1")
+transactions |> List.find (fun transaction -> transaction.CustomerId = "1")
 
-transactions
-|> List.find (fun transaction -> transaction.CustomerId = "4") // Throws error
+transactions |> List.find (fun transaction -> transaction.CustomerId = "4") // Throws error
 
 // Handle missing data using Option type
-transactions
-|> List.tryFind (fun x -> x.CustomerId = "4")
+transactions |> List.tryFind (fun x -> x.CustomerId = "4")
 
-transactions
-|> List.tryFind (fun x -> x.CustomerId = "1")
+transactions |> List.tryFind (fun x -> x.CustomerId = "1")
 
 // Append & Prepend
 let todoList = [ "Learn F#"; "Create app"; "Profit!" ]
@@ -100,37 +101,32 @@ let transactionSeq = transactions |> Seq.ofList
 
 (**OPERATIONS**)
 transactions
-|> List.map
-    (fun transaction ->
-        let taxRate = 0.03
+|> List.map (fun transaction ->
+    let taxRate = 0.03
 
-        {| PreTax = transaction.Amount
-           Tax = transaction.Amount * taxRate
-           Total = transaction.Amount * (1.0 + taxRate) |}) // Calculate tax
+    {| PreTax = transaction.Amount
+       Tax = transaction.Amount * taxRate
+       Total = transaction.Amount * (1.0 + taxRate) |}) // Calculate tax
 
 transactions
 |> List.iter (fun transaction -> printfn $"{transaction.CustomerId}")
 
 // Total Transactions
-transactions
-|> List.sumBy (fun transaction -> transaction.Amount)
+transactions |> List.sumBy (fun transaction -> transaction.Amount)
 
 // Average amount
-transactions
-|> List.averageBy (fun transaction -> transaction.Amount)
+transactions |> List.averageBy (fun transaction -> transaction.Amount)
 
 // Filter
 transactions
 |> List.filter (fun transaction -> transaction.Date > DateTime(2021, 1, 31))
 
 // Sort
-transactions
-|> List.sortBy (fun transaction -> transaction.Date)
+transactions |> List.sortBy (fun transaction -> transaction.Date)
 
-transactions
-|> List.sortByDescending (fun transaction -> transaction.Date)
+transactions |> List.sortByDescending (fun transaction -> transaction.Date)
 
 // Pipelines
 transactions
-|> List.filter(fun transaction -> transaction.Date > DateTime(2021, 1, 31))
-|> List.sortByDescending (fun transaction  -> transaction.Date)
+|> List.filter (fun transaction -> transaction.Date > DateTime(2021, 1, 31))
+|> List.sortByDescending (fun transaction -> transaction.Date)

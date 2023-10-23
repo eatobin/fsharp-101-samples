@@ -16,7 +16,7 @@ let getHtml (source: string) =
 let documents =
     [ "https://docs.microsoft.com/dotnet/fsharp"
       "https://docs.microsoft.com/dotnet/fsharp/tutorials/asynchronous-and-concurrent-programming/async"
-      "https://docs.microsoft.com/dotnet/fsharp/language-reference/asynchronous-workflows" ]
+      "https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/" ]
 
 documents
 |> List.map getHtml
